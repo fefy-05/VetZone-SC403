@@ -116,7 +116,9 @@ public class Cliente {
         this.activo = activo;
     }
 
-    // Util: para mostrar el nombre completo en el select de mascotas
+    // ------- IMPORTANTE ---------
+    // sirve para mostrar el nombre completo en el select de mascotas
+    
     public String getNombreCompleto() {
         return nombre + " " + apellidos;
     }

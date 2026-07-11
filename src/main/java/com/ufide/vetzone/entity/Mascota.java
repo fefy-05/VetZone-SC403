@@ -44,7 +44,9 @@ public class Mascota {
     @PositiveOrZero(message = "El peso no puede ser negativo")
     private double peso;
 
-    // Importante: aca esta la relacion. Muchas mascotas pertenecen a un cliente.
+    // -------- Importante --------
+    // aca esta la relacion - Muchas mascotas pertenecen a un cliente-
+
     @NotNull(message = "Debe seleccionar un dueno")
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
@@ -55,7 +57,6 @@ public class Mascota {
     public Mascota() {
     }
 
-    // Getters y setters
     public Long getId() {
         return id;
     }
@@ -121,11 +122,10 @@ public class Mascota {
     }
 }
 
-
- //  ---------- IMPORTANTE -------------
- //  aca esta la relacion entre mascota y cliente.
- //  muchas mascotas pueden ser de un mismo dueno, por eso se usa @ManyToOne
- // El @JoinColumn le dice a Hibernate que el dueno se guarda en la columna cliente_id de la tabla mascotas
- // No guardamos solo el id, guardamos el objeto Cliente completo, asi en las vistas podemos hacer directamente mascota.cliente.nombreCompleto
-
- 
+// ---------- IMPORTANTE -------------
+// aca esta la relacion entre mascota y cliente.
+// muchas mascotas pueden ser de un mismo dueno, por eso se usa @ManyToOne
+// El @JoinColumn le dice a Hibernate que el dueno se guarda en la columna
+// cliente_id de la tabla mascotas
+// No guardamos solo el id, guardamos el objeto Cliente completo, asi en las
+// vistas podemos hacer directamente mascota.cliente.nombreCompleto
