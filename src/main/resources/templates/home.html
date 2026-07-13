@@ -47,7 +47,27 @@
                     </div>
                 </div>
             </div>
+      
+
+        
+
+            <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="bi bi-calendar-check fs-1 text-primary"></i>
+                <h5 class="card-title mt-2">Citas</h5>
+                <p class="card-text small text-muted">
+                    Registro y administracion de citas veterinarias.
+                </p>
+                <a th:href="@{/citas}"
+                   class="btn btn-outline-primary btn-sm">
+                    Ver citas
+                </a>
+            </div>
         </div>
+    </div>
+
+</div>
     </main>
 
     <footer th:replace="~{fragments/header :: footer}"></footer>
