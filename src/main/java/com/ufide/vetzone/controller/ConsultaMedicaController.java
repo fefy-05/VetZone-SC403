@@ -70,4 +70,54 @@ public class ConsultaMedicaController {
 
         return "redirect:/consultas";
     }
+    @GetMapping("/{id}/editar")
+public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+    ConsultaMedica consulta = consultaMedicaService.buscarPorId(id)
+            .orElseThrow(() ->
+                    new IllegalArgumentException("Consulta médica no encontrada"));
+
+    model.addAttribute("consulta", consulta);
+    model.addAttribute("citas", citaService.listar());
+
+    return "consultas/form";
+}
+
+@PostMapping("/{id}")
+public String actualizar(
+        @PathVariable Long id,
+        @Valid @ModelAttribute("consulta") ConsultaMedica consulta,
+        BindingResult result,
+        Model model,
+        RedirectAttributes ra) {
+
+    if (result.hasErrors()) {
+        model.addAttribute("citas", citaService.listar());
+        return "consultas/form";
+    }
+
+    consulta.setId(id);
+    consultaMedicaService.guardar(consulta);
+
+    ra.addFlashAttribute(
+            "ok",
+            "Consulta médica actualizada correctamente"
+    );
+
+    return "redirect:/consultas";
+}
+
+@PostMapping("/{id}/eliminar")
+public String eliminar(@PathVariable Long id,
+                       RedirectAttributes ra) {
+
+    consultaMedicaService.eliminar(id);
+
+    ra.addFlashAttribute(
+            "ok",
+            "Consulta médica eliminada correctamente"
+    );
+
+    return "redirect:/consultas";
+}
+
 }

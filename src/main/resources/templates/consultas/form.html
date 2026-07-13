@@ -23,8 +23,12 @@
     <h1 class="mb-4">Registrar consulta médica</h1>
 
     <form th:object="${consulta}"
-          th:action="@{/consultas}"
-          method="post">
+      th:action="${consulta.id == null}
+                 ? @{/consultas}
+                 : @{/consultas/{id}(id=${consulta.id})}"
+      method="post">
+
+
 
         <input type="hidden" th:field="*{id}">
 
@@ -98,7 +102,12 @@
            th:href="@{/consultas}">
             Cancelar
         </a>
-
+<h1 class="mb-4"
+    th:text="${consulta.id == null}
+             ? 'Registrar consulta médica'
+             : 'Editar consulta médica'">
+    Consulta médica
+</h1>
     </form>
 
 </main>
