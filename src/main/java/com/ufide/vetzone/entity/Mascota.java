@@ -45,7 +45,7 @@ public class Mascota {
     private double peso;
 
     // -------- Importante --------
-    // aca esta la relacion - Muchas mascotas pertenecen a un cliente-
+    // aca esta la relacion - Muchas mascotas pertenecen a un cliente -
 
     @NotNull(message = "Debe seleccionar un dueno")
     @ManyToOne
@@ -123,7 +123,7 @@ public class Mascota {
 }
 
 // ---------- IMPORTANTE -------------
-// aca esta la relacion entre mascota y cliente.
+// aca esta la relacion entre mascota y cliente
 // muchas mascotas pueden ser de un mismo dueno, por eso se usa @ManyToOne
 // El @JoinColumn le dice a Hibernate que el dueno se guarda en la columna
 // cliente_id de la tabla mascotas
