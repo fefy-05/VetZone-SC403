@@ -5,37 +5,72 @@
 
     <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
+
             <a class="navbar-brand fw-bold" th:href="@{/}">
                 <i class="bi bi-heart-pulse me-2"></i>VetZone
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="menu">
+
                 <ul class="navbar-nav me-auto">
+
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}">Inicio</a>
+                        <a class="nav-link" th:href="@{/}">
+                            Inicio
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/clientes}">Clientes</a>
+                        <a class="nav-link" th:href="@{/clientes}">
+                            Clientes
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/mascotas}">Mascotas</a>
+                        <a class="nav-link" th:href="@{/mascotas}">
+                            Mascotas
+                        </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/citas}">
+                            Citas
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/consultas}">
+                            Consultas médicas
+                        </a>
+                    </li>
+
                 </ul>
-                <span class="navbar-text text-white-50 small">SC-403 - Grupo 1</span>
+
+                <span class="navbar-text text-white-50 small">
+                    SC-403 - Grupo 1
+                </span>
+
             </div>
+
         </div>
     </nav>
 
-    <footer th:fragment="footer" class="bg-light border-top mt-5 py-3">
+    <footer th:fragment="footer"
+            class="bg-light border-top mt-5 py-3">
+
         <div class="container text-center text-muted small">
             VetZone
         </div>
+
     </footer>
 
 </body>
 
-</html>
+</html> 
