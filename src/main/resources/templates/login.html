@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login VetZone</title>
+</head>
+
+<body>
+
+<h1>Iniciar sesión</h1>
+
+<p th:text="${error}"></p>
+
+
+<form th:action="@{/login}"
+      th:object="${loginRequest}"
+      method="post">
+
+
+    <div>
+        <label>Correo:</label>
+
+        <input type="email"
+               th:field="*{correo}">
+    </div>
+
+
+    <br>
+
+
+    <div>
+        <label>Contraseña:</label>
+
+        <input type="password"
+               th:field="*{password}">
+    </div>
+
+
+    <br>
+
+
+    <button type="submit">
+        Ingresar
+    </button>
+
+
+</form>
+
+
+</body>
+
+</html>
