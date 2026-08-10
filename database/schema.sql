@@ -91,3 +91,19 @@ CREATE TABLE IF NOT EXISTS productos (
     activo BOOLEAN NOT NULL DEFAULT TRUE,
     FOREIGN KEY (categoria_id) REFERENCES categorias_productos(id) ON UPDATE CASCADE
 );
+
+
+------ allan fernandez roles temporales----- 
+USE vetzonedb;
+
+INSERT INTO roles (nombre) VALUES
+('ADMIN'),
+('RECEPCIONISTA'),
+('VETERINARIO');
+
+INSERT INTO usuarios
+(nombre, apellidos, correo, password, activo, rol_id)
+VALUES
+('Carlos', 'Mora', 'carlos.mora@vetzone.com', 'temporal', 1, 3),
+('Andrea', 'Solano', 'andrea.solano@vetzone.com', 'temporal', 1, 3),
+('Daniel', 'Vargas', 'daniel.vargas@vetzone.com', 'temporal', 1, 3);
