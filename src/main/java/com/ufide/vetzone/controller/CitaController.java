@@ -178,7 +178,7 @@ public class CitaController {
 
             ra.addFlashAttribute(
                     "ok",
-                    "Cita eliminada correctamente"
+                    "Cita cancelada correctamente" 
             );
 
         } catch (IllegalArgumentException e) {

@@ -24,7 +24,7 @@ public class ConsultaMedica {
 
     @NotBlank(message = "El diagnóstico es obligatorio")
     @Size(max = 1000, message = "El diagnóstico no puede superar 1000 caracteres")
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String diagnostico;
 
     @Size(max = 1000, message = "El tratamiento no puede superar 1000 caracteres")
