@@ -39,7 +39,9 @@ public class CitaController {
 
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model) {
-        Cita cita = citaService.buscarPorId(id).orElse(null);
+
+        Cita cita = citaService.buscarPorId(id)
+                .orElse(null);
 
         model.addAttribute("cita", cita);
 
@@ -73,27 +75,33 @@ public class CitaController {
 
         if (result.hasErrors()) {
 
-            model.addAttribute(
-                    "mascotas",
-                    mascotaService.listar()
-            );
-
-            model.addAttribute(
-                    "veterinarios",
-                    usuarioService.listarVeterinariosActivos()
-            );
+            cargarDatosFormulario(model);
 
             return "citas/form";
         }
 
-        citaService.guardar(cita);
+        try {
 
-        ra.addFlashAttribute(
-                "ok",
-                "Cita guardada correctamente"
-        );
+            citaService.guardar(cita);
 
-        return "redirect:/citas";
+            ra.addFlashAttribute(
+                    "ok",
+                    "Cita guardada correctamente"
+            );
+
+            return "redirect:/citas";
+
+        } catch (IllegalArgumentException e) {
+
+            model.addAttribute(
+                    "error",
+                    e.getMessage()
+            );
+
+            cargarDatosFormulario(model);
+
+            return "citas/form";
+        }
     }
 
     @GetMapping("/{id}/editar")
@@ -113,15 +121,7 @@ public class CitaController {
                 cita
         );
 
-        model.addAttribute(
-                "mascotas",
-                mascotaService.listar()
-        );
-
-        model.addAttribute(
-                "veterinarios",
-                usuarioService.listarVeterinariosActivos()
-        );
+        cargarDatosFormulario(model);
 
         return "citas/form";
     }
@@ -136,29 +136,35 @@ public class CitaController {
 
         if (result.hasErrors()) {
 
-            model.addAttribute(
-                    "mascotas",
-                    mascotaService.listar()
-            );
-
-            model.addAttribute(
-                    "veterinarios",
-                    usuarioService.listarVeterinariosActivos()
-            );
+            cargarDatosFormulario(model);
 
             return "citas/form";
         }
 
-        cita.setId(id);
+        try {
 
-        citaService.guardar(cita);
+            cita.setId(id);
 
-        ra.addFlashAttribute(
-                "ok",
-                "Cita actualizada correctamente"
-        );
+            citaService.guardar(cita);
 
-        return "redirect:/citas";
+            ra.addFlashAttribute(
+                    "ok",
+                    "Cita actualizada correctamente"
+            );
+
+            return "redirect:/citas";
+
+        } catch (IllegalArgumentException e) {
+
+            model.addAttribute(
+                    "error",
+                    e.getMessage()
+            );
+
+            cargarDatosFormulario(model);
+
+            return "citas/form";
+        }
     }
 
     @PostMapping("/{id}/eliminar")
@@ -166,13 +172,36 @@ public class CitaController {
             @PathVariable Long id,
             RedirectAttributes ra) {
 
-        citaService.eliminar(id);
+        try {
 
-        ra.addFlashAttribute(
-                "ok",
-                "Cita eliminada correctamente"
-        );
+            citaService.eliminar(id);
+
+            ra.addFlashAttribute(
+                    "ok",
+                    "Cita eliminada correctamente"
+            );
+
+        } catch (IllegalArgumentException e) {
+
+            ra.addFlashAttribute(
+                    "error",
+                    e.getMessage()
+            );
+        }
 
         return "redirect:/citas";
+    }
+
+    private void cargarDatosFormulario(Model model) {
+
+        model.addAttribute(
+                "mascotas",
+                mascotaService.listar()
+        );
+
+        model.addAttribute(
+                "veterinarios",
+                usuarioService.listarVeterinariosActivos()
+        );
     }
 }
