@@ -40,17 +40,25 @@ public class Cita {
     @JoinColumn(name = "mascota_id", nullable = false)
     private Mascota mascota;
 
+    @NotNull(message = "Debe seleccionar un veterinario")
+    @ManyToOne
+    @JoinColumn(name = "veterinario_id", nullable = false)
+    private Usuario veterinario;
+
     public Cita() {
     }
 
     public Cita(LocalDateTime fechaHora,
                 String motivo,
                 String estado,
-                Mascota mascota) {
+                Mascota mascota,
+                Usuario veterinario) {
+
         this.fechaHora = fechaHora;
         this.motivo = motivo;
         this.estado = estado;
         this.mascota = mascota;
+        this.veterinario = veterinario;
     }
 
     public Long getId() {
@@ -91,5 +99,13 @@ public class Cita {
 
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
+    }
+
+    public Usuario getVeterinario() {
+        return veterinario;
+    }
+
+    public void setVeterinario(Usuario veterinario) {
+        this.veterinario = veterinario;
     }
 }
