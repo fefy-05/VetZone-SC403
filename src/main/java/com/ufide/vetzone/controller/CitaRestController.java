@@ -52,7 +52,7 @@ public class CitaRestController {
 
             Usuario veterinario = usuarioService.buscarPorId(
                     request.getVeterinarioId()
-            ).orElse(null);
+            );
 
             if (veterinario == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -153,8 +153,8 @@ public class CitaRestController {
 
         response.setVeterinarioNombre(
                 cita.getVeterinario().getNombre()
-                + " "
-                + cita.getVeterinario().getApellidos()
+                        + " "
+                        + cita.getVeterinario().getApellidos()
         );
 
         return response;
