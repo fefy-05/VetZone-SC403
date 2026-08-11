@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -23,7 +24,6 @@ public class Cita {
     private Long id;
 
     @NotNull(message = "La fecha y hora son obligatorias")
-    @FutureOrPresent(message = "La cita debe programarse para una fecha actual o futura")
     @Column(name = "fecha_hora", nullable = false)
     private LocalDateTime fechaHora;
 
@@ -32,25 +32,35 @@ public class Cita {
     private String motivo;
 
     @NotNull(message = "El estado es obligatorio")
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String estado = "PENDIENTE";
+    private EstadoCita estado = EstadoCita.PENDIENTE;
 
     @NotNull(message = "Debe seleccionar una mascota")
     @ManyToOne
     @JoinColumn(name = "mascota_id", nullable = false)
     private Mascota mascota;
 
+    @NotNull(message = "Debe seleccionar un veterinario")
+    @ManyToOne
+    @JoinColumn(name = "veterinario_id", nullable = false)
+    private Usuario veterinario;
+
     public Cita() {
     }
 
-    public Cita(LocalDateTime fechaHora,
-                String motivo,
-                String estado,
-                Mascota mascota) {
+    public Cita(
+            LocalDateTime fechaHora,
+            String motivo,
+            EstadoCita estado,
+            Mascota mascota,
+            Usuario veterinario) {
+
         this.fechaHora = fechaHora;
         this.motivo = motivo;
         this.estado = estado;
         this.mascota = mascota;
+        this.veterinario = veterinario;
     }
 
     public Long getId() {
@@ -77,11 +87,11 @@ public class Cita {
         this.motivo = motivo;
     }
 
-    public String getEstado() {
+    public EstadoCita getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoCita estado) {
         this.estado = estado;
     }
 
@@ -91,5 +101,13 @@ public class Cita {
 
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
+    }
+
+    public Usuario getVeterinario() {
+        return veterinario;
+    }
+
+    public void setVeterinario(Usuario veterinario) {
+        this.veterinario = veterinario;
     }
 }

@@ -1,0 +1,126 @@
+{
+  "info": {
+    "_postman_id": "d86d34b5-73e3-4b22-a9a5-c2c2f57e2d35",
+    "name": "VetZone API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57284633"
+  },
+  "item": [
+    {
+      "name": "POST Cita - 201 Created",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fechaHora\": \"2026-08-15T10:00:00\",\r\n  \"motivo\": \"Control general\",\r\n  \"mascotaId\": 1,\r\n  \"veterinarioId\": 4\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/citas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "citas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Cita - 409 Choque horario",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fechaHora\": \"2026-08-15T10:15:00\",\r\n  \"motivo\": \"Prueba choque de horario\",\r\n  \"mascotaId\": 1,\r\n  \"veterinarioId\": 4\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/citas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "citas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Cita - 404 Veterinario no encontrado",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fechaHora\": \"2026-08-20T11:00:00\",\r\n  \"motivo\": \"Prueba veterinario inexistente\",\r\n  \"mascotaId\": 1,\r\n  \"veterinarioId\": 9999\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/citas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "citas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Cita - 400 Datos invalidos",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fechaHora\": \"2026-08-20T14:00:00\",\r\n  \"motivo\": \"Prueba datos invalidos\",\r\n  \"mascotaId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/citas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "citas"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
