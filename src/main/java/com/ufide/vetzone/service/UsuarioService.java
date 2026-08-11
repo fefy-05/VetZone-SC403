@@ -1,6 +1,7 @@
 package com.ufide.vetzone.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,15 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    // Buscar usuario por correo (login)
+    // Buscar usuario por correo
     public Usuario buscarPorCorreo(String correo) {
         return usuarioRepository.findByCorreo(correo)
                 .orElse(null);
+    }
+
+    // Buscar usuario por ID
+    public Optional<Usuario> buscarPorId(Long id) {
+        return usuarioRepository.findById(id);
     }
 
     // Listar solamente veterinarios activos
