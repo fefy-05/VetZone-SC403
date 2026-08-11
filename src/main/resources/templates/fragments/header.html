@@ -1,19 +1,23 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
 
 <body>
 
+    <!-- ==================== NAVBAR ==================== -->
     <nav th:fragment="navbar"
          class="navbar navbar-expand-lg navbar-dark bg-primary">
 
         <div class="container">
 
+            <!-- Logo -->
             <a class="navbar-brand fw-bold" th:href="@{/}">
                 <i class="bi bi-heart-pulse me-2"></i>VetZone
             </a>
 
+            <!-- Botón responsive -->
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
@@ -25,8 +29,10 @@
 
             <div class="collapse navbar-collapse" id="menu">
 
+                <!-- ==================== MENÚ ==================== -->
                 <ul class="navbar-nav me-auto">
 
+                    <!-- Inicio -->
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/}"
@@ -35,6 +41,7 @@
                         </a>
                     </li>
 
+                    <!-- Clientes -->
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/clientes}"
@@ -43,6 +50,7 @@
                         </a>
                     </li>
 
+                    <!-- Mascotas -->
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/mascotas}"
@@ -51,6 +59,7 @@
                         </a>
                     </li>
 
+                    <!-- Citas -->
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/citas}"
@@ -59,6 +68,7 @@
                         </a>
                     </li>
 
+                    <!-- Consultas -->
                     <li class="nav-item">
                         <a class="nav-link"
                            th:href="@{/consultas}"
@@ -67,11 +77,13 @@
                         </a>
                     </li>
 
+                    <!-- Usuarios - solamente ADMIN -->
                     <li class="nav-item"
                         sec:authorize="hasRole('ADMIN')">
 
                         <a class="nav-link"
-                           th:href="@{/usuarios}">
+                           th:href="@{/usuarios}"
+                           th:text="#{menu.usuarios}">
                             Usuarios
                         </a>
 
@@ -80,6 +92,7 @@
                 </ul>
 
 
+                <!-- ==================== IDIOMA ==================== -->
                 <div class="dropdown me-3">
 
                     <button class="btn btn-sm btn-outline-light dropdown-toggle"
@@ -88,8 +101,14 @@
 
                         <i class="bi bi-translate me-1"></i>
 
-                        <span th:text="#{idioma}">
-                            Idioma
+                        <!-- Español si el idioma actual es es -->
+                        <span th:if="${#locale.language == 'es'}">
+                            Español
+                        </span>
+
+                        <!-- English si el idioma actual es en -->
+                        <span th:if="${#locale.language == 'en'}">
+                            English
                         </span>
 
                     </button>
@@ -98,17 +117,15 @@
 
                         <li>
                             <a class="dropdown-item"
-                               th:href="@{''(lang='es')}"
-                               th:text="#{idioma.es}">
+                               th:href="@{''(lang='es')}">
                                 Español
                             </a>
                         </li>
 
                         <li>
                             <a class="dropdown-item"
-                               th:href="@{''(lang='en')}"
-                               th:text="#{idioma.en}">
-                                Inglés
+                               th:href="@{''(lang='en')}">
+                                English
                             </a>
                         </li>
 
@@ -117,6 +134,7 @@
                 </div>
 
 
+                <!-- ==================== USUARIO ==================== -->
                 <div class="d-flex align-items-center"
                      sec:authorize="isAuthenticated()">
 
@@ -131,12 +149,14 @@
                     </span>
 
 
+                    <!-- Rol -->
                     <span class="badge bg-light text-primary me-3"
                           sec:authentication="principal.authorities">
                         ROLE_USER
                     </span>
 
 
+                    <!-- Logout -->
                     <form th:action="@{/logout}"
                           method="post"
                           class="d-inline">
@@ -146,7 +166,9 @@
 
                             <i class="bi bi-box-arrow-right me-1"></i>
 
-                            Cerrar sesión
+                            <span th:text="${#locale.language == 'es' ? 'Cerrar sesión' : 'Log out'}">
+                                Cerrar sesión
+                            </span>
 
                         </button>
 
@@ -161,6 +183,7 @@
     </nav>
 
 
+    <!-- ==================== FOOTER ==================== -->
     <footer th:fragment="footer"
             class="bg-light border-top mt-5 py-3">
 
@@ -171,6 +194,11 @@
         </div>
 
     </footer>
+
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 </body>
 

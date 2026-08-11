@@ -1,16 +1,25 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Consultas médicas | VetZone</title>
+```
+<title th:text="#{consulta.titulo} + ' | VetZone'">
+    Consultas médicas | VetZone
+</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-          rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet">
+
+<link rel="stylesheet" th:href="@{/css/styles.css}">
+```
+
 </head>
 
 <body>
@@ -19,102 +28,156 @@
 
 <main class="container my-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="mb-1">Consultas médicas</h1>
+```
+<!-- Encabezado -->
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-            <p class="text-muted">
-                Total:
-                <span class="badge bg-primary"
-                      th:text="${consultas.size()}">
-                    0
-                </span>
-            </p>
-        </div>
+    <div>
+        <h1 class="mb-1" th:text="#{consulta.titulo}">
+            Consultas médicas
+        </h1>
 
-        <a class="btn btn-primary"
-           th:href="@{/consultas/nueva}">
-            <i class="bi bi-plus-circle me-1"></i>
-            Nueva consulta
-        </a>
+        <p class="text-muted">
+
+            <span th:text="#{consulta.total}">
+                Total
+            </span>:
+
+            <span class="badge bg-primary"
+                  th:text="${consultas.size()}">
+                0
+            </span>
+
+        </p>
     </div>
 
-    <div class="alert alert-success alert-dismissible fade show"
-         th:if="${ok}">
+    <a class="btn btn-primary"
+       th:href="@{/consultas/nueva}">
 
-        <span th:text="${ok}">
-            Operación realizada correctamente
+        <i class="bi bi-plus-circle me-1"></i>
+
+        <span th:text="#{consulta.nueva}">
+            Nueva consulta
         </span>
 
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="alert">
-        </button>
-    </div>
-
-    <div class="row g-3">
-
-        <div class="col-12 col-md-6 col-lg-4"
-             th:each="c : ${consultas}">
-
-            <div class="card h-100 shadow-sm">
-
-                <div class="card-body d-flex flex-column">
-
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-
-                        <span class="badge bg-secondary">
-                            Consulta médica
-                        </span>
-
-                        <small class="text-muted"
-                               th:text="${c.fechaRegistro}">
-                            Fecha
-                        </small>
-                    </div>
-
-                    <h5 class="card-title">
-                        Diagnóstico
-                    </h5>
-
-                    <p class="text-muted small flex-grow-1"
-                       th:text="${c.diagnostico}">
-                        Diagnóstico de la consulta
-                    </p>
-
-                    <div class="small text-muted mb-2">
-                        <i class="bi bi-calendar-check me-1"></i>
-                        Cita:
-                        <span th:text="${c.cita.id}">
-                            0
-                        </span>
-                    </div>
-                    <div class="d-flex gap-2 mt-3">
-
-    <a class="btn btn-outline-primary btn-sm"
-       th:href="@{/consultas/{id}(id=${c.id})}">
-        <i class="bi bi-eye me-1"></i>
-        Ver
     </a>
 
-    <a class="btn btn-outline-warning btn-sm"
-       th:href="@{/consultas/{id}/editar(id=${c.id})}">
-        <i class="bi bi-pencil me-1"></i>
-        Editar
-    </a>
+</div>
+
+
+<!-- Mensaje de éxito -->
+<div class="alert alert-success alert-dismissible fade show"
+     th:if="${ok}">
+
+    <span th:text="${ok}">
+        Operación realizada correctamente
+    </span>
 
     <button type="button"
-            class="btn btn-outline-danger btn-sm"
-            data-bs-toggle="modal"
-            data-bs-target="#modalEliminar"
-            th:data-id="${c.id}">
-        <i class="bi bi-trash me-1"></i>
-        Eliminar
+            class="btn-close"
+            data-bs-dismiss="alert">
     </button>
 
 </div>
 
 
+<!-- Listado -->
+<div class="row g-3">
+
+    <div class="col-12 col-md-6 col-lg-4"
+         th:each="c : ${consultas}">
+
+        <div class="card h-100 shadow-sm">
+
+            <div class="card-body d-flex flex-column">
+
+                <!-- Tipo y fecha -->
+                <div class="d-flex justify-content-between align-items-start mb-2">
+
+                    <span class="badge bg-secondary"
+                          th:text="#{consulta.etiqueta}">
+                        Consulta médica
+                    </span>
+
+                    <small class="text-muted"
+                           th:text="${c.fechaRegistro}">
+                        Fecha
+                    </small>
+
+                </div>
+
+
+                <!-- Diagnóstico -->
+                <h5 class="card-title"
+                    th:text="#{consulta.diagnostico}">
+                    Diagnóstico
+                </h5>
+
+                <p class="text-muted small flex-grow-1"
+                   th:text="${c.diagnostico}">
+                    Diagnóstico de la consulta
+                </p>
+
+
+                <!-- Cita -->
+                <div class="small text-muted mb-2">
+
+                    <i class="bi bi-calendar-check me-1"></i>
+
+                    <span th:text="#{consulta.cita}">
+                        Cita
+                    </span>:
+
+                    <span th:text="${c.cita.id}">
+                        0
+                    </span>
+
+                </div>
+
+
+                <!-- Acciones -->
+                <div class="d-flex gap-2 mt-3">
+
+                    <!-- Ver -->
+                    <a class="btn btn-outline-primary btn-sm"
+                       th:href="@{/consultas/{id}(id=${c.id})}">
+
+                        <i class="bi bi-eye me-1"></i>
+
+                        <span th:text="#{boton.ver}">
+                            Ver
+                        </span>
+
+                    </a>
+
+
+                    <!-- Editar -->
+                    <a class="btn btn-outline-warning btn-sm"
+                       th:href="@{/consultas/{id}/editar(id=${c.id})}">
+
+                        <i class="bi bi-pencil me-1"></i>
+
+                        <span th:text="#{boton.editar}">
+                            Editar
+                        </span>
+
+                    </a>
+
+
+                    <!-- Eliminar -->
+                    <button type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEliminar"
+                            th:data-id="${c.id}">
+
+                        <i class="bi bi-trash me-1"></i>
+
+                        <span th:text="#{consulta.eliminar}">
+                            Eliminar
+                        </span>
+
+                    </button>
 
                 </div>
 
@@ -124,69 +187,115 @@
 
     </div>
 
-    <div class="alert alert-warning mt-4"
-         th:if="${consultas.isEmpty()}">
+</div>
 
-        <i class="bi bi-exclamation-triangle me-2"></i>
+
+<!-- Sin consultas -->
+<div class="alert alert-warning mt-4"
+     th:if="${consultas.isEmpty()}">
+
+    <i class="bi bi-exclamation-triangle me-2"></i>
+
+    <span th:text="#{consulta.vacio}">
         No hay consultas médicas para mostrar.
+    </span>
 
-    </div>
+</div>
+```
 
 </main>
-<div class="modal fade" id="modalEliminar" tabindex="-1">
-    <div class="modal-dialog">
 
-        <form id="formEliminar" method="post">
+<!-- Modal -->
 
-            <div class="modal-content">
+<div class="modal fade"
+     id="modalEliminar"
+     tabindex="-1">
 
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        Confirmar eliminación
-                    </h5>
+```
+<div class="modal-dialog">
 
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal">
-                    </button>
-                </div>
+    <form id="formEliminar"
+          method="post">
 
-                <div class="modal-body">
-                    ¿Seguro que deseas eliminar esta consulta médica?
-                </div>
+        <div class="modal-content">
 
-                <div class="modal-footer">
-                    <button type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
-                        Cancelar
-                    </button>
+            <div class="modal-header">
 
-                    <button type="submit"
-                            class="btn btn-danger">
-                        Sí, eliminar
-                    </button>
-                </div>
+                <h5 class="modal-title"
+                    th:text="#{consulta.confirmar.titulo}">
+                    Confirmar eliminación
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
 
             </div>
 
-        </form>
 
-    </div>
+            <div class="modal-body">
+
+                <span th:text="#{consulta.confirmar.pregunta}">
+                    ¿Seguro que deseas eliminar esta consulta médica?
+                </span>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    <span th:text="#{boton.cancelar}">
+                        Cancelar
+                    </span>
+
+                </button>
+
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    <span th:text="#{consulta.eliminar}">
+                        Eliminar
+                    </span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
 </div>
+```
+
+</div>
+
 <footer th:replace="~{fragments/header :: footer}"></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
 <script>
+
 document.getElementById('modalEliminar')
     .addEventListener('show.bs.modal', event => {
 
         const boton = event.relatedTarget;
+
         const id = boton.getAttribute('data-id');
 
         document.getElementById('formEliminar').action =
             '/consultas/' + id + '/eliminar';
+
     });
+
 </script>
+
 </body>
 </html>
