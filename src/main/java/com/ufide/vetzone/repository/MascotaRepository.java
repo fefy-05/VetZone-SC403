@@ -13,7 +13,8 @@ public interface MascotaRepository extends JpaRepository<Mascota, Long> {
     // -------- Importante --------
     // con esto podemos traer todas las mascotas de un mismo dueno
     // Spring lo arma solo leyendo el nombre del metodo (Cliente - Id)
+    // solo trae las activas, asi las desactivadas no vuelven a aparecer
 
-    List<Mascota> findByClienteId(Long clienteId);
+    List<Mascota> findByClienteIdAndActivaTrue(Long clienteId);
 
 }
