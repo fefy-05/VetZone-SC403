@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle del cliente | VetZone</title>
+    <title th:text="#{cliente.detalle} + ' | VetZone'">Detalle del cliente | VetZone</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
@@ -15,39 +15,78 @@
 
     <main class="container my-4" style="max-width: 720px;">
 
-        <div th:if="${cliente == null}" class="alert alert-warning">
-            <i class="bi bi-exclamation-triangle me-2"></i>
-            Cliente no encontrado.
-        </div>
-
-        <div th:if="${cliente != null}" class="card shadow-sm">
+        <div class="card shadow-sm">
             <div class="card-body">
                 <h1 class="h3 mb-3" th:text="${cliente.nombreCompleto}">Nombre</h1>
 
                 <hr>
 
                 <dl class="row mb-0">
-                    <dt class="col-sm-4">Cedula</dt>
+                    <dt class="col-sm-4" th:text="#{cliente.cedula}">Cedula</dt>
                     <dd class="col-sm-8" th:text="${cliente.cedula}">cedula</dd>
 
-                    <dt class="col-sm-4">Telefono</dt>
+                    <dt class="col-sm-4" th:text="#{cliente.telefono}">Telefono</dt>
                     <dd class="col-sm-8" th:text="${cliente.telefono}">telefono</dd>
 
-                    <dt class="col-sm-4">Correo</dt>
+                    <dt class="col-sm-4" th:text="#{cliente.correo}">Correo</dt>
                     <dd class="col-sm-8" th:text="${cliente.correo}">correo</dd>
 
-                    <dt class="col-sm-4">Direccion</dt>
+                    <dt class="col-sm-4" th:text="#{cliente.direccion}">Direccion</dt>
                     <dd class="col-sm-8" th:text="${cliente.direccion}">direccion</dd>
                 </dl>
 
                 <div class="d-flex justify-content-end gap-2 mt-4">
                     <a th:href="@{/clientes}" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left me-1"></i>Volver
+                        <i class="bi bi-arrow-left me-1"></i><span th:text="#{boton.volver}">Volver</span>
                     </a>
                     <a th:href="@{/clientes/{id}/editar(id=${cliente.id})}" class="btn btn-warning">
-                        <i class="bi bi-pencil me-1"></i>Editar
+                        <i class="bi bi-pencil me-1"></i><span th:text="#{boton.editar}">Editar</span>
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <!-- aca se ve la relacion 1:N, las mascotas activas de este cliente -->
+
+        <div class="card shadow-sm mt-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0" th:text="#{cliente.mascotas}">Mascotas</h2>
+                <span class="badge bg-primary" th:text="${mascotas.size()}">0</span>
+            </div>
+
+            <div class="card-body">
+
+                <div class="alert alert-warning mb-0" th:if="${mascotas.isEmpty()}">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span th:text="#{cliente.sinMascotas}">Este cliente todavia no tiene mascotas registradas.</span>
+                </div>
+
+                <div class="table-responsive" th:unless="${mascotas.isEmpty()}">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th th:text="#{mascota.nombre}">Nombre</th>
+                                <th th:text="#{mascota.animal}">Animal</th>
+                                <th th:text="#{mascota.raza}">Raza</th>
+                                <th th:text="#{mascota.peso}">Peso</th>
+                                <th class="text-end" th:text="#{cliente.acciones}">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="m : ${mascotas}">
+                                <td th:text="${m.nombre}">Nombre</td>
+                                <td th:text="${m.animal}">Animal</td>
+                                <td th:text="${m.raza}">Raza</td>
+                                <td th:text="${m.peso != null} ? ${m.peso} + ' kg' : '-'">0 kg</td>
+                                <td class="text-end">
+                                    <a class="btn btn-outline-primary btn-sm"
+                                        th:href="@{/mascotas/{id}(id=${m.id})}" th:text="#{boton.ver}">Ver</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
 
