@@ -12,73 +12,67 @@ import com.ufide.vetzone.service.UsuarioDetailsService;
 @Configuration
 public class SecurityConfig {
 
-    private final UsuarioDetailsService usuarioDetailsService;
+private final UsuarioDetailsService usuarioDetailsService;
 
-    public SecurityConfig(UsuarioDetailsService usuarioDetailsService) {
-        this.usuarioDetailsService = usuarioDetailsService;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
-
-        http
-
-            // CSRF
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/usuarios")
-            )
-
-            // PERMISOS
-            .authorizeHttpRequests(auth -> auth
-
-                // Páginas públicas
-                .requestMatchers(
-                    "/login",
-                    "/usuarios/nuevo",
-                    "/css/**",
-                    "/js/**",
-                    "/images/**"
-                ).permitAll()
-
-                // Solo ADMIN puede administrar usuarios
-                .requestMatchers("/usuarios/**")
-                    .hasRole("ADMIN")
-
-                // Todo lo demás requiere iniciar sesión
-                .anyRequest().authenticated()
-            )
-
-            // Servicio que busca los usuarios en MySQL
-            .userDetailsService(usuarioDetailsService)
-
-            // LOGIN
-            .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-
-                // Después del login TODOS van al inicio
-                .defaultSuccessUrl("/", true)
-
-                .failureUrl("/login?error")
-                .permitAll()
-            )
-
-            // LOGOUT
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll()
-            );
-
-        return http.build();
-    }
+public SecurityConfig(UsuarioDetailsService usuarioDetailsService) {
+    this.usuarioDetailsService = usuarioDetailsService;
 }
 
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
+
+    http
+
+        .csrf(csrf -> csrf
+            .ignoringRequestMatchers("/usuarios")
+        )
+
+        .authorizeHttpRequests(auth -> auth
+
+            .requestMatchers(
+                "/login",
+                "/access-denied",
+                "/usuarios/nuevo",
+                "/css/**",
+                "/js/**",
+                "/images/**"
+            ).permitAll()
+
+            .requestMatchers("/usuarios/**")
+                .hasRole("ADMIN")
+
+            .anyRequest().authenticated()
+        )
+
+        .userDetailsService(usuarioDetailsService)
+
+        .formLogin(form -> form
+            .loginPage("/login")
+            .loginProcessingUrl("/login")
+            .defaultSuccessUrl("/", true)
+            .failureUrl("/login?error")
+            .permitAll()
+        )
+
+        .exceptionHandling(exception -> exception
+            .accessDeniedPage("/access-denied")
+        )
+
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login?logout")
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
+            .permitAll()
+        );
+
+    return http.build();
+}
+
+}
