@@ -1,17 +1,26 @@
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
 
-    <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav th:fragment="navbar"
+         class="navbar navbar-expand-lg navbar-dark bg-primary">
+
         <div class="container">
 
             <a class="navbar-brand fw-bold" th:href="@{/}">
                 <i class="bi bi-heart-pulse me-2"></i>VetZone
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#menu">
+
                 <span class="navbar-toggler-icon"></span>
+
             </button>
 
             <div class="collapse navbar-collapse" id="menu">
@@ -19,68 +28,146 @@
                 <ul class="navbar-nav me-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}" th:text="#{menu.inicio}">
+                        <a class="nav-link"
+                           th:href="@{/}"
+                           th:text="#{menu.inicio}">
                             Inicio
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/clientes}" th:text="#{menu.clientes}">
+                        <a class="nav-link"
+                           th:href="@{/clientes}"
+                           th:text="#{menu.clientes}">
                             Clientes
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/mascotas}" th:text="#{menu.mascotas}">
+                        <a class="nav-link"
+                           th:href="@{/mascotas}"
+                           th:text="#{menu.mascotas}">
                             Mascotas
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/citas}" th:text="#{menu.citas}">
+                        <a class="nav-link"
+                           th:href="@{/citas}"
+                           th:text="#{menu.citas}">
                             Citas
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/consultas}" th:text="#{menu.consultas}">
+                        <a class="nav-link"
+                           th:href="@{/consultas}"
+                           th:text="#{menu.consultas}">
                             Consultas médicas
                         </a>
                     </li>
 
+                    <li class="nav-item"
+                        sec:authorize="hasRole('ADMIN')">
+
+                        <a class="nav-link"
+                           th:href="@{/usuarios}">
+                            Usuarios
+                        </a>
+
+                    </li>
+
                 </ul>
 
-                <!-- selector de idioma, manda ?lang= a la misma pagina -->
 
                 <div class="dropdown me-3">
-                    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button"
-                        data-bs-toggle="dropdown">
+
+                    <button class="btn btn-sm btn-outline-light dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown">
+
                         <i class="bi bi-translate me-1"></i>
-                        <span th:text="#{idioma}">Idioma</span>
+
+                        <span th:text="#{idioma}">
+                            Idioma
+                        </span>
+
                     </button>
+
                     <ul class="dropdown-menu dropdown-menu-end">
+
                         <li>
-                            <a class="dropdown-item" th:href="@{''(lang='es')}" th:text="#{idioma.es}">Español</a>
+                            <a class="dropdown-item"
+                               th:href="@{''(lang='es')}"
+                               th:text="#{idioma.es}">
+                                Español
+                            </a>
                         </li>
+
                         <li>
-                            <a class="dropdown-item" th:href="@{''(lang='en')}" th:text="#{idioma.en}">Inglés</a>
+                            <a class="dropdown-item"
+                               th:href="@{''(lang='en')}"
+                               th:text="#{idioma.en}">
+                                Inglés
+                            </a>
                         </li>
+
                     </ul>
+
                 </div>
 
-                <span class="navbar-text text-white-50 small" th:text="#{app.grupo}">
-                    SC-403 - Grupo 1
-                </span>
+
+                <div class="d-flex align-items-center"
+                     sec:authorize="isAuthenticated()">
+
+                    <span class="navbar-text text-white me-2">
+
+                        <i class="bi bi-person-circle me-1"></i>
+
+                        <span sec:authentication="name">
+                            usuario
+                        </span>
+
+                    </span>
+
+
+                    <span class="badge bg-light text-primary me-3"
+                          sec:authentication="principal.authorities">
+                        ROLE_USER
+                    </span>
+
+
+                    <form th:action="@{/logout}"
+                          method="post"
+                          class="d-inline">
+
+                        <button type="submit"
+                                class="btn btn-outline-light btn-sm">
+
+                            <i class="bi bi-box-arrow-right me-1"></i>
+
+                            Cerrar sesión
+
+                        </button>
+
+                    </form>
+
+                </div>
 
             </div>
 
         </div>
+
     </nav>
 
-    <footer th:fragment="footer" class="bg-light border-top mt-5 py-3">
+
+    <footer th:fragment="footer"
+            class="bg-light border-top mt-5 py-3">
 
         <div class="container text-center text-muted small">
+
             VetZone
+
         </div>
 
     </footer>
@@ -88,3 +175,4 @@
 </body>
 
 </html>
+
