@@ -1,5 +1,7 @@
 package com.ufide.vetzone.controller;
 
+import java.util.Optional;
+
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ufide.vetzone.entity.Cliente;
 import com.ufide.vetzone.service.ClienteService;
+import com.ufide.vetzone.service.MascotaService;
 
 @Controller
 @RequestMapping("/clientes")
@@ -22,6 +25,11 @@ public class ClienteController {
 
     @Autowired
     private ClienteService service;
+
+    // necesitamos el MascotaService para mostrar las mascotas en el detalle
+
+    @Autowired
+    private MascotaService mascotaService;
 
     @GetMapping
     public String listar(Model model) {
@@ -39,6 +47,13 @@ public class ClienteController {
     public String guardar(@Valid @ModelAttribute("cliente") Cliente cliente,
             BindingResult result,
             RedirectAttributes ra) {
+
+        // el error se agrega al campo cedula para que salga en el formulario
+        // y no como una excepcion de MySQL por la restriccion UNIQUE
+
+        if (service.existeCedula(cliente.getCedula())) {
+            result.rejectValue("cedula", "cedula.repetida", "Ya existe un cliente con esa cedula");
+        }
 
         if (result.hasErrors()) {
             return "clientes/form";
@@ -64,6 +79,10 @@ public class ClienteController {
             BindingResult result,
             RedirectAttributes ra) {
 
+        if (service.existeCedulaEnOtroCliente(cliente.getCedula(), id)) {
+            result.rejectValue("cedula", "cedula.repetida", "Ya existe un cliente con esa cedula");
+        }
+
         if (result.hasErrors()) {
             return "clientes/form";
         }
@@ -77,13 +96,23 @@ public class ClienteController {
     @PostMapping("/{id}/eliminar")
     public String eliminar(@PathVariable Long id, RedirectAttributes ra) {
         service.eliminar(id);
-        ra.addFlashAttribute("ok", "Cliente eliminado correctamente");
+        ra.addFlashAttribute("ok", "Cliente desactivado correctamente");
         return "redirect:/clientes";
     }
 
     @GetMapping("/{id}")
-    public String detalle(@PathVariable Long id, Model model) {
-        model.addAttribute("cliente", service.buscarPorId(id).orElse(null));
+    public String detalle(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        Optional<Cliente> cliente = service.buscarPorId(id);
+
+        // si no existe volvemos al listado con un mensaje, en vez de mandar null a la vista
+
+        if (cliente.isEmpty()) {
+            ra.addFlashAttribute("error", "El cliente no existe");
+            return "redirect:/clientes";
+        }
+
+        model.addAttribute("cliente", cliente.get());
+        model.addAttribute("mascotas", mascotaService.buscarPorCliente(id));
         return "clientes/detalle";
     }
 }

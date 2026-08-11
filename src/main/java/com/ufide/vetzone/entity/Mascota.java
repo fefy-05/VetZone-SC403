@@ -1,5 +1,6 @@
 package com.ufide.vetzone.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -41,11 +43,14 @@ public class Mascota {
     @PastOrPresent(message = "La fecha de nacimiento no puede ser futura")
     private LocalDate fechaNacimiento;
 
-    @PositiveOrZero(message = "El peso no puede ser negativo")
-    private double peso;
+    // BigDecimal y no double, para que coincida con DECIMAL(5,2) de MySQL
 
-    // -------- Importante --------
-    // aca esta la relacion - Muchas mascotas pertenecen a un cliente-
+    @PositiveOrZero(message = "El peso no puede ser negativo")
+    @Digits(integer = 3, fraction = 2, message = "El peso maximo es 999.99")
+    @Column(precision = 5, scale = 2)
+    private BigDecimal peso;
+
+    // muchas mascotas pertenecen a un mismo cliente, el dueno se guarda en cliente_id
 
     @NotNull(message = "Debe seleccionar un dueno")
     @ManyToOne
@@ -97,11 +102,11 @@ public class Mascota {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public double getPeso() {
+    public BigDecimal getPeso() {
         return peso;
     }
 
-    public void setPeso(double peso) {
+    public void setPeso(BigDecimal peso) {
         this.peso = peso;
     }
 
@@ -121,11 +126,3 @@ public class Mascota {
         this.activa = activa;
     }
 }
-
-// ---------- IMPORTANTE -------------
-// aca esta la relacion entre mascota y cliente.
-// muchas mascotas pueden ser de un mismo dueno, por eso se usa @ManyToOne
-// El @JoinColumn le dice a Hibernate que el dueno se guarda en la columna
-// cliente_id de la tabla mascotas
-// No guardamos solo el id, guardamos el objeto Cliente completo, asi en las
-// vistas podemos hacer directamente mascota.cliente.nombreCompleto

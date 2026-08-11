@@ -15,6 +15,9 @@ public class ClienteService {
     @Autowired
     private ClienteRepository repo;
 
+    @Autowired
+    private MascotaService mascotaService;
+
     public List<Cliente> listar() {
         return repo.findByActivoTrue();
     }
@@ -27,11 +30,25 @@ public class ClienteService {
         return repo.findByNombreContainingIgnoreCase(nombre);
     }
 
+    public boolean existeCedula(String cedula) {
+        return repo.existsByCedula(cedula);
+    }
+
+    public boolean existeCedulaEnOtroCliente(String cedula, Long id) {
+        return repo.existsByCedulaAndIdNot(cedula, id);
+    }
+
     public Cliente guardar(Cliente cliente) {
         return repo.save(cliente);
     }
 
+    // eliminacion logica, el cliente sale del listado pero conserva su historial
+    // sus mascotas activas se desactivan para que no se les asignen citas nuevas
+
     public void eliminar(Long id) {
-        repo.deleteById(id);
+        Cliente cliente = repo.findById(id).orElseThrow();
+        cliente.setActivo(false);
+        repo.save(cliente);
+        mascotaService.desactivarPorCliente(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.ufide.vetzone.controller;
 
 import jakarta.validation.Valid;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,14 +96,22 @@ public class MascotaController {
     @PostMapping("/{id}/eliminar")
     public String eliminar(@PathVariable Long id, RedirectAttributes ra) {
         service.eliminar(id);
-        ra.addFlashAttribute("ok", "Mascota eliminada correctamente");
+        ra.addFlashAttribute("ok", "Mascota desactivada correctamente");
         return "redirect:/mascotas";
     }
 
-    @GetMapping("/{id}")
-    public String detalle(@PathVariable Long id, Model model) {
-        model.addAttribute("mascota", service.buscarPorId(id).orElse(null));
+@GetMapping("/{id}")
+    public String detalle(@PathVariable Long id, Model model, RedirectAttributes ra) {
+        Optional<Mascota> mascota = service.buscarPorId(id);
+
+        // si no existe volvemos al listado con un mensaje, en vez de mandar null a la vista
+
+        if (mascota.isEmpty()) {
+            ra.addFlashAttribute("error", "La mascota no existe");
+            return "redirect:/mascotas";
+        }
+
+        model.addAttribute("mascota", mascota.get());
         return "mascotas/detalle";
     }
-
 }
