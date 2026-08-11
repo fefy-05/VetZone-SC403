@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Formulario de cita | VetZone</title>
+    <title th:text="#{cita.form.titulo} + ' | VetZone'">
+        Formulario de cita | VetZone
+    </title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
@@ -23,24 +25,37 @@
 <main class="container my-4" style="max-width: 750px;">
 
     <h1 class="mb-4"
-        th:text="${cita.id == null} ? 'Nueva cita' : 'Editar cita'">
+        th:text="${cita.id == null}
+                 ? #{cita.form.nueva}
+                 : #{cita.form.editar}">
         Cita
     </h1>
 
     <div class="alert alert-danger"
-     th:if="${error}">
-    <i class="bi bi-exclamation-triangle me-2"></i>
-    <span th:text="${error}"></span>
-</div>
+         th:if="${error}">
+
+        <i class="bi bi-exclamation-triangle me-2"></i>
+
+        <span th:text="${error}">
+            Error
+        </span>
+
+    </div>
 
     <form th:object="${cita}"
-          th:action="${cita.id == null} ? @{/citas} : @{/citas/{id}(id=${cita.id})}"
+          th:action="${cita.id == null}
+                     ? @{/citas}
+                     : @{/citas/{id}(id=${cita.id})}"
           method="post">
 
         <input type="hidden" th:field="*{id}">
 
         <div class="mb-3">
-            <label class="form-label">Fecha y hora</label>
+
+            <label class="form-label"
+                   th:text="#{cita.fechaHora}">
+                Fecha y hora
+            </label>
 
             <input type="datetime-local"
                    class="form-control"
@@ -49,10 +64,15 @@
             <div class="text-danger"
                  th:errors="*{fechaHora}">
             </div>
+
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Motivo</label>
+
+            <label class="form-label"
+                   th:text="#{cita.motivo}">
+                Motivo
+            </label>
 
             <textarea class="form-control"
                       rows="3"
@@ -62,27 +82,36 @@
             <div class="text-danger"
                  th:errors="*{motivo}">
             </div>
+
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Estado</label>
+
+            <label class="form-label"
+                   th:text="#{cita.estado}">
+                Estado
+            </label>
 
             <select class="form-select"
                     th:field="*{estado}">
 
-                <option value="PENDIENTE">
+                <option value="PENDIENTE"
+                        th:text="#{cita.estado.pendiente}">
                     Pendiente
                 </option>
 
-                <option value="CONFIRMADA">
+                <option value="CONFIRMADA"
+                        th:text="#{cita.estado.confirmada}">
                     Confirmada
                 </option>
 
-                <option value="CANCELADA">
+                <option value="CANCELADA"
+                        th:text="#{cita.estado.cancelada}">
                     Cancelada
                 </option>
 
-                <option value="ATENDIDA">
+                <option value="ATENDIDA"
+                        th:text="#{cita.estado.atendida}">
                     Atendida
                 </option>
 
@@ -91,15 +120,21 @@
             <div class="text-danger"
                  th:errors="*{estado}">
             </div>
+
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Mascota</label>
+
+            <label class="form-label"
+                   th:text="#{cita.mascota}">
+                Mascota
+            </label>
 
             <select class="form-select"
                     th:field="*{mascota}">
 
-                <option value="">
+                <option value=""
+                        th:text="#{cita.seleccionarMascota}">
                     Seleccione una mascota
                 </option>
 
@@ -114,15 +149,21 @@
             <div class="text-danger"
                  th:errors="*{mascota}">
             </div>
+
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Veterinario</label>
+
+            <label class="form-label"
+                   th:text="#{cita.veterinario}">
+                Veterinario
+            </label>
 
             <select class="form-select"
                     th:field="*{veterinario}">
 
-                <option value="">
+                <option value=""
+                        th:text="#{cita.seleccionarVeterinario}">
                     Seleccione un veterinario
                 </option>
 
@@ -137,16 +178,23 @@
             <div class="text-danger"
                  th:errors="*{veterinario}">
             </div>
+
         </div>
 
         <button type="submit"
                 class="btn btn-success">
+
             <i class="bi bi-save me-1"></i>
-            Guardar
+
+            <span th:text="#{boton.guardar}">
+                Guardar
+            </span>
+
         </button>
 
         <a class="btn btn-secondary"
-           th:href="@{/citas}">
+           th:href="@{/citas}"
+           th:text="#{boton.cancelar}">
             Cancelar
         </a>
 
@@ -157,4 +205,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-</html> 
+</html>

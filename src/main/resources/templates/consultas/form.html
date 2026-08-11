@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title th:text="${consulta.id == null}
-                    ? 'Nueva consulta médica | VetZone'
-                    : 'Editar consulta médica | VetZone'">
+                    ? #{consulta.form.nueva} + ' | VetZone'
+                    : #{consulta.form.editar} + ' | VetZone'">
         Consulta médica | VetZone
     </title>
 
@@ -28,8 +28,8 @@
 
     <h1 class="mb-4"
         th:text="${consulta.id == null}
-                 ? 'Registrar consulta médica'
-                 : 'Editar consulta médica'">
+                 ? #{consulta.form.nueva}
+                 : #{consulta.form.editar}">
         Consulta médica
     </h1>
 
@@ -39,8 +39,9 @@
         <i class="bi bi-exclamation-triangle me-2"></i>
 
         <span th:text="${error}">
-            Ocurrió un error
+            Error
         </span>
+
     </div>
 
     <form th:object="${consulta}"
@@ -53,7 +54,8 @@
 
         <div class="mb-3">
 
-            <label class="form-label">
+            <label class="form-label"
+                   th:text="#{consulta.cita}">
                 Cita relacionada
             </label>
 
@@ -61,7 +63,8 @@
                     th:field="*{cita}"
                     required>
 
-                <option value="">
+                <option value=""
+                        th:text="#{consulta.seleccionarCita}">
                     Seleccione una cita
                 </option>
 
@@ -86,7 +89,8 @@
 
         <div class="mb-3">
 
-            <label class="form-label">
+            <label class="form-label"
+                   th:text="#{consulta.diagnostico}">
                 Diagnóstico
             </label>
 
@@ -105,7 +109,8 @@
 
         <div class="mb-3">
 
-            <label class="form-label">
+            <label class="form-label"
+                   th:text="#{consulta.tratamiento}">
                 Tratamiento
             </label>
 
@@ -123,7 +128,8 @@
 
         <div class="mb-3">
 
-            <label class="form-label">
+            <label class="form-label"
+                   th:text="#{consulta.observaciones}">
                 Observaciones
             </label>
 
@@ -145,15 +151,16 @@
             <i class="bi bi-save me-1"></i>
 
             <span th:text="${consulta.id == null}
-                           ? 'Guardar consulta'
-                           : 'Actualizar consulta'">
+                           ? #{consulta.guardar}
+                           : #{consulta.actualizar}">
                 Guardar consulta
             </span>
 
         </button>
 
         <a class="btn btn-secondary"
-           th:href="@{/consultas}">
+           th:href="@{/consultas}"
+           th:text="#{boton.cancelar}">
             Cancelar
         </a>
 
