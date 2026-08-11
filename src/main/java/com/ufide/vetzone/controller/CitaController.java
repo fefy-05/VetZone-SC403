@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ufide.vetzone.entity.Cita;
+import com.ufide.vetzone.entity.EstadoCita;
 import com.ufide.vetzone.service.CitaService;
 import com.ufide.vetzone.service.MascotaService;
 import com.ufide.vetzone.service.UsuarioService;
@@ -38,10 +39,16 @@ public class CitaController {
     }
 
     @GetMapping("/{id}")
-    public String detalle(@PathVariable Long id, Model model) {
+    public String detalle(
+            @PathVariable Long id,
+            Model model) {
 
         Cita cita = citaService.buscarPorId(id)
-                .orElse(null);
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Cita no encontrada"
+                        )
+                );
 
         model.addAttribute("cita", cita);
 
@@ -53,15 +60,7 @@ public class CitaController {
 
         model.addAttribute("cita", new Cita());
 
-        model.addAttribute(
-                "mascotas",
-                mascotaService.listar()
-        );
-
-        model.addAttribute(
-                "veterinarios",
-                usuarioService.listarVeterinariosActivos()
-        );
+        cargarDatosFormulario(model);
 
         return "citas/form";
     }
@@ -107,7 +106,8 @@ public class CitaController {
     @GetMapping("/{id}/editar")
     public String mostrarFormularioEditar(
             @PathVariable Long id,
-            Model model) {
+            Model model,
+            RedirectAttributes ra) {
 
         Cita cita = citaService.buscarPorId(id)
                 .orElseThrow(() ->
@@ -116,10 +116,27 @@ public class CitaController {
                         )
                 );
 
-        model.addAttribute(
-                "cita",
-                cita
-        );
+        if (cita.getEstado() == EstadoCita.ATENDIDA) {
+
+            ra.addFlashAttribute(
+                    "error",
+                    "No se puede editar una cita que ya fue atendida"
+            );
+
+            return "redirect:/citas";
+        }
+
+        if (cita.getEstado() == EstadoCita.CANCELADA) {
+
+            ra.addFlashAttribute(
+                    "error",
+                    "No se puede editar una cita cancelada"
+            );
+
+            return "redirect:/citas";
+        }
+
+        model.addAttribute("cita", cita);
 
         cargarDatosFormulario(model);
 
@@ -133,6 +150,33 @@ public class CitaController {
             BindingResult result,
             Model model,
             RedirectAttributes ra) {
+
+        Cita existente = citaService.buscarPorId(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Cita no encontrada"
+                        )
+                );
+
+        if (existente.getEstado() == EstadoCita.ATENDIDA) {
+
+            ra.addFlashAttribute(
+                    "error",
+                    "No se puede modificar una cita que ya fue atendida"
+            );
+
+            return "redirect:/citas";
+        }
+
+        if (existente.getEstado() == EstadoCita.CANCELADA) {
+
+            ra.addFlashAttribute(
+                    "error",
+                    "No se puede modificar una cita cancelada"
+            );
+
+            return "redirect:/citas";
+        }
 
         if (result.hasErrors()) {
 
@@ -178,7 +222,7 @@ public class CitaController {
 
             ra.addFlashAttribute(
                     "ok",
-                    "Cita cancelada correctamente" 
+                    "Cita cancelada correctamente"
             );
 
         } catch (IllegalArgumentException e) {
