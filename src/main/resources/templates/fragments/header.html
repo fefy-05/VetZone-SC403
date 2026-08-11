@@ -5,6 +5,7 @@
 
     <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
+
             <a class="navbar-brand fw-bold" th:href="@{/}">
                 <i class="bi bi-heart-pulse me-2"></i>VetZone
             </a>
@@ -14,26 +15,74 @@
             </button>
 
             <div class="collapse navbar-collapse" id="menu">
+
                 <ul class="navbar-nav me-auto">
+
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}">Inicio</a>
+                        <a class="nav-link" th:href="@{/}" th:text="#{menu.inicio}">
+                            Inicio
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/clientes}">Clientes</a>
+                        <a class="nav-link" th:href="@{/clientes}" th:text="#{menu.clientes}">
+                            Clientes
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/mascotas}">Mascotas</a>
+                        <a class="nav-link" th:href="@{/mascotas}" th:text="#{menu.mascotas}">
+                            Mascotas
+                        </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/citas}" th:text="#{menu.citas}">
+                            Citas
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/consultas}" th:text="#{menu.consultas}">
+                            Consultas médicas
+                        </a>
+                    </li>
+
                 </ul>
-                <span class="navbar-text text-white-50 small">SC-403 - Grupo 1</span>
+
+                <!-- selector de idioma, manda ?lang= a la misma pagina -->
+
+                <div class="dropdown me-3">
+                    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown">
+                        <i class="bi bi-translate me-1"></i>
+                        <span th:text="#{idioma}">Idioma</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" th:href="@{''(lang='es')}" th:text="#{idioma.es}">Español</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{''(lang='en')}" th:text="#{idioma.en}">Inglés</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <span class="navbar-text text-white-50 small" th:text="#{app.grupo}">
+                    SC-403 - Grupo 1
+                </span>
+
             </div>
+
         </div>
     </nav>
 
     <footer th:fragment="footer" class="bg-light border-top mt-5 py-3">
+
         <div class="container text-center text-muted small">
             VetZone
         </div>
+
     </footer>
 
 </body>
