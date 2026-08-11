@@ -101,15 +101,28 @@
                                   ${c.estado.name() == 'PENDIENTE'} ? ' bg-warning text-dark' :
                                   (${c.estado.name() == 'CONFIRMADA'} ? ' bg-primary' :
                                   (${c.estado.name() == 'ATENDIDA'} ? ' bg-success' :
-                                  ' bg-secondary'))"
-                              th:text="${c.estado.name() == 'PENDIENTE'}
-                                      ? #{cita.estado.pendiente}
-                                      : (${c.estado.name() == 'CONFIRMADA'}
-                                      ? #{cita.estado.confirmada}
-                                      : (${c.estado.name() == 'ATENDIDA'}
-                                      ? #{cita.estado.atendida}
-                                      : #{cita.estado.cancelada})}">
-                            Estado
+                                  ' bg-secondary'))">
+
+                            <span th:if="${c.estado.name() == 'PENDIENTE'}"
+                                  th:text="#{cita.estado.pendiente}">
+                                Pendiente
+                            </span>
+
+                            <span th:if="${c.estado.name() == 'CONFIRMADA'}"
+                                  th:text="#{cita.estado.confirmada}">
+                                Confirmada
+                            </span>
+
+                            <span th:if="${c.estado.name() == 'ATENDIDA'}"
+                                  th:text="#{cita.estado.atendida}">
+                                Atendida
+                            </span>
+
+                            <span th:if="${c.estado.name() == 'CANCELADA'}"
+                                  th:text="#{cita.estado.cancelada}">
+                                Cancelada
+                            </span>
+
                         </span>
 
                         <small class="text-muted"

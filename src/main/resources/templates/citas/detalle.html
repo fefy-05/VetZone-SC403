@@ -60,15 +60,28 @@
                         Estado
                     </strong>:
 
-                    <span class="badge bg-secondary"
-                          th:text="${cita.estado.name() == 'PENDIENTE'}
-                                  ? #{cita.estado.pendiente}
-                                  : (${cita.estado.name() == 'CONFIRMADA'}
-                                  ? #{cita.estado.confirmada}
-                                  : (${cita.estado.name() == 'ATENDIDA'}
-                                  ? #{cita.estado.atendida}
-                                  : #{cita.estado.cancelada})}">
-                        Estado
+                    <span class="badge bg-secondary">
+
+                        <span th:if="${cita.estado.name() == 'PENDIENTE'}"
+                              th:text="#{cita.estado.pendiente}">
+                            Pendiente
+                        </span>
+
+                        <span th:if="${cita.estado.name() == 'CONFIRMADA'}"
+                              th:text="#{cita.estado.confirmada}">
+                            Confirmada
+                        </span>
+
+                        <span th:if="${cita.estado.name() == 'ATENDIDA'}"
+                              th:text="#{cita.estado.atendida}">
+                            Atendida
+                        </span>
+
+                        <span th:if="${cita.estado.name() == 'CANCELADA'}"
+                              th:text="#{cita.estado.cancelada}">
+                            Cancelada
+                        </span>
+
                     </span>
                 </p>
 
@@ -92,29 +105,33 @@
                     </span>
                 </p>
 
-                <a class="btn btn-warning"
-                   th:if="${cita.estado.name() != 'ATENDIDA'
-                          and cita.estado.name() != 'CANCELADA'}"
-                   th:href="@{/citas/{id}/editar(id=${cita.id})}">
+                <div class="d-flex gap-2 mt-4">
 
-                    <i class="bi bi-pencil me-1"></i>
+                    <a class="btn btn-warning"
+                       th:if="${cita.estado.name() != 'ATENDIDA'
+                              and cita.estado.name() != 'CANCELADA'}"
+                       th:href="@{/citas/{id}/editar(id=${cita.id})}">
 
-                    <span th:text="#{boton.editar}">
-                        Editar
-                    </span>
+                        <i class="bi bi-pencil me-1"></i>
 
-                </a>
+                        <span th:text="#{boton.editar}">
+                            Editar
+                        </span>
 
-                <a class="btn btn-secondary"
-                   th:href="@{/citas}">
+                    </a>
 
-                    <i class="bi bi-arrow-left me-1"></i>
+                    <a class="btn btn-secondary"
+                       th:href="@{/citas}">
 
-                    <span th:text="#{boton.volver}">
-                        Volver
-                    </span>
+                        <i class="bi bi-arrow-left me-1"></i>
 
-                </a>
+                        <span th:text="#{boton.volver}">
+                            Volver
+                        </span>
+
+                    </a>
+
+                </div>
 
             </div>
 
@@ -135,4 +152,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-</html>
+</html> 
