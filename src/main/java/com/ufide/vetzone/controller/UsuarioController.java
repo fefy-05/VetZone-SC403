@@ -98,6 +98,7 @@ public class UsuarioController {
         usuarioExistente.setCorreo(usuario.getCorreo());
 
         Rol rol = rolService.buscarPorId(rolId);
+
         usuarioExistente.setRol(rol);
 
         // Solo cambia la contraseña si se escribió una nueva

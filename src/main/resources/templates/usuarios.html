@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
@@ -10,7 +11,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Usuarios - VetZone</title>
+    <title th:text="#{usuario.titulo}">Usuarios - VetZone</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
@@ -22,95 +23,224 @@
 
 <body>
 
+    <!-- NAVBAR -->
     <div th:replace="~{fragments/header :: navbar}">
     </div>
 
 
-    <div class="container mt-4">
+    <!-- CONTENIDO -->
+    <main class="container mt-4">
 
-        <h1 class="mb-4">
-            Usuarios registrados
-        </h1>
+        <!-- TÍTULO -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <a th:href="@{/usuarios/nuevo}"
-           class="btn btn-primary mb-3">
+            <div>
 
-            <i class="bi bi-person-plus me-1"></i>
+                <h1 class="mb-1"
+                    th:text="#{usuario.titulo}">
+                    Usuarios
+                </h1>
 
-            Crear usuario
+                <p class="text-muted mb-0">
 
-        </a>
+                    <span th:text="#{usuario.total}">
+                        Total
+                    </span>:
 
+                    <span class="badge bg-primary"
+                          th:text="${usuarios.size()}">
+                        0
+                    </span>
+
+                </p>
+
+            </div>
+
+
+            <!-- CREAR USUARIO -->
+            <a th:href="@{/usuarios/nuevo}"
+               class="btn btn-primary">
+
+                <i class="bi bi-person-plus me-1"></i>
+
+                <span th:text="#{usuario.nuevo}">
+                    Nuevo usuario
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- TABLA -->
         <div class="table-responsive">
 
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped table-hover align-middle">
 
+                <!-- ENCABEZADO -->
                 <thead class="table-dark">
 
                     <tr>
 
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th>Correo</th>
-                        <th>Rol</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>
+                            ID
+                        </th>
+
+                        <th th:text="#{usuario.nombre}">
+                            Nombre
+                        </th>
+
+                        <th th:text="#{usuario.apellidos}">
+                            Apellidos
+                        </th>
+
+                        <th th:text="#{usuario.correo}">
+                            Correo
+                        </th>
+
+                        <th th:text="#{usuario.rol}">
+                            Rol
+                        </th>
+
+                        <th th:text="#{usuario.estado}">
+                            Estado
+                        </th>
+
+                        <th th:text="#{usuario.acciones}">
+                            Acciones
+                        </th>
 
                     </tr>
 
                 </thead>
 
 
+                <!-- USUARIOS -->
                 <tbody>
 
                     <tr th:each="usuario : ${usuarios}">
 
+                        <!-- ID -->
                         <td th:text="${usuario.id}">
+                            0
                         </td>
 
+
+                        <!-- NOMBRE -->
                         <td th:text="${usuario.nombre}">
+                            Nombre
                         </td>
 
+
+                        <!-- APELLIDOS -->
                         <td th:text="${usuario.apellidos}">
+                            Apellidos
                         </td>
 
+
+                        <!-- CORREO -->
                         <td th:text="${usuario.correo}">
+                            correo@ejemplo.com
                         </td>
 
-                        <td th:text="${usuario.rol.nombre}">
-                        </td>
 
+                        <!-- ROL -->
                         <td>
 
+                            <!-- ADMIN -->
+                            <span th:if="${usuario.rol != null and usuario.rol.nombre == 'ADMIN'}">
+
+                                <span th:if="${#locale.language == 'es'}">
+                                    ADMIN
+                                </span>
+
+                                <span th:if="${#locale.language == 'en'}">
+                                    ADMIN
+                                </span>
+
+                            </span>
+
+
+                            <!-- RECEPCIONISTA -->
+                            <span th:if="${usuario.rol != null and usuario.rol.nombre == 'RECEPCIONISTA'}">
+
+                                <span th:if="${#locale.language == 'es'}">
+                                    RECEPCIONISTA
+                                </span>
+
+                                <span th:if="${#locale.language == 'en'}">
+                                    RECEPTIONIST
+                                </span>
+
+                            </span>
+
+
+                            <!-- VETERINARIO -->
+                            <span th:if="${usuario.rol != null and usuario.rol.nombre == 'VETERINARIO'}">
+
+                                <span th:if="${#locale.language == 'es'}">
+                                    VETERINARIO
+                                </span>
+
+                                <span th:if="${#locale.language == 'en'}">
+                                    VETERINARIAN
+                                </span>
+
+                            </span>
+
+
+                            <!-- SIN ROL -->
+                            <span th:if="${usuario.rol == null}">
+                                -
+                            </span>
+
+                        </td>
+
+
+                        <!-- ESTADO -->
+                        <td>
+
+                            <!-- ACTIVO -->
                             <span th:if="${usuario.activo}"
                                   class="badge bg-success">
 
-                                Activo
+                                <span th:text="#{usuario.activo}">
+                                    Activo
+                                </span>
 
                             </span>
 
+
+                            <!-- INACTIVO -->
                             <span th:unless="${usuario.activo}"
                                   class="badge bg-danger">
 
-                                Inactivo
+                                <span th:text="#{usuario.inactivo}">
+                                    Inactivo
+                                </span>
 
                             </span>
 
                         </td>
 
+
+                        <!-- ACCIONES -->
                         <td>
 
+                            <!-- EDITAR -->
                             <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}"
                                class="btn btn-warning btn-sm">
 
                                 <i class="bi bi-pencil-square"></i>
 
-                                Editar
+                                <span th:text="#{usuario.editar}">
+                                    Editar usuario
+                                </span>
 
                             </a>
 
 
+                            <!-- DESACTIVAR -->
                             <form th:if="${usuario.activo}"
                                   th:action="@{/usuarios/estado/{id}(id=${usuario.id})}"
                                   method="post"
@@ -121,7 +251,9 @@
 
                                     <i class="bi bi-person-x"></i>
 
-                                    Desactivar
+                                    <span th:text="#{usuario.cambiarEstado}">
+                                        Cambiar estado
+                                    </span>
 
                                 </button>
 
@@ -129,7 +261,6 @@
 
 
                             <!-- ACTIVAR -->
-
                             <form th:unless="${usuario.activo}"
                                   th:action="@{/usuarios/estado/{id}(id=${usuario.id})}"
                                   method="post"
@@ -140,7 +271,9 @@
 
                                     <i class="bi bi-person-check"></i>
 
-                                    Activar
+                                    <span th:text="#{usuario.cambiarEstado}">
+                                        Cambiar estado
+                                    </span>
 
                                 </button>
 
@@ -157,22 +290,44 @@
         </div>
 
 
-        <a th:href="@{/}"
-           class="btn btn-secondary">
+        <!-- SIN USUARIOS -->
+        <div class="alert alert-warning"
+             th:if="${usuarios == null or usuarios.isEmpty()}">
 
-            <i class="bi bi-arrow-left me-1"></i>
+            <i class="bi bi-exclamation-triangle me-2"></i>
 
-            Volver al inicio
+            <span th:text="#{usuario.vacio}">
+                No hay usuarios registrados.
+            </span>
 
-        </a>
-
-    </div>
+        </div>
 
 
+        <!-- VOLVER -->
+        <div class="mt-3">
+
+            <a th:href="@{/}"
+               class="btn btn-secondary">
+
+                <i class="bi bi-arrow-left me-1"></i>
+
+                <span th:text="#{boton.volver}">
+                    Volver
+                </span>
+
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
     <footer th:replace="~{fragments/header :: footer}">
     </footer>
 
 
+    <!-- BOOTSTRAP -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
