@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS productos (
 );
 
 
------- allan fernandez roles temporales----- 
+------ allan fernandez roles ----- 
 USE vetzonedb;
 
 INSERT INTO roles (nombre) VALUES
@@ -104,6 +104,36 @@ INSERT INTO roles (nombre) VALUES
 INSERT INTO usuarios
 (nombre, apellidos, correo, password, activo, rol_id)
 VALUES
-('Carlos', 'Mora', 'carlos.mora@vetzone.com', 'temporal', 1, 3),
-('Andrea', 'Solano', 'andrea.solano@vetzone.com', 'temporal', 1, 3),
-('Daniel', 'Vargas', 'daniel.vargas@vetzone.com', 'temporal', 1, 3);
+(
+    'Carlos',
+    'Mora',
+    'carlos.mora@vetzone.com',
+    '$2a$10$Zmz9U.zWU5dQYQjABXknDevVoqelGlpqWJIL/d0ItjZ.5nqhUexeO',
+    TRUE,
+    3
+),
+(
+    'Andrea',
+    'Solano',
+    'andrea.solano@vetzone.com',
+    '$2a$10$Zmz9U.zWU5dQYQjABXknDevVoqelGlpqWJIL/d0ItjZ.5nqhUexeO',
+    TRUE,
+    3
+),
+(
+    'Daniel',
+    'Vargas',
+    'daniel.vargas@vetzone.com',
+    '$2a$10$Zmz9U.zWU5dQYQjABXknDevVoqelGlpqWJIL/d0ItjZ.5nqhUexeO',
+    TRUE,
+    3
+);
+
+USE vetzonedb;
+
+INSERT IGNORE INTO categorias_productos (nombre) VALUES
+('Alimentos'),
+('Medicamentos'),
+('Higiene'),
+('Accesorios'),
+('Juguetes');

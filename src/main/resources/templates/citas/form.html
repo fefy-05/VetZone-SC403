@@ -24,11 +24,18 @@
 
 <main class="container my-4" style="max-width: 750px;">
 
-    <h1 class="mb-4"
-        th:text="${cita.id == null}
-                 ? #{cita.form.nueva}
-                 : #{cita.form.editar}">
-        Cita
+    <h1 class="mb-4">
+
+        <span th:if="${cita.id == null}"
+              th:text="#{cita.form.nueva}">
+            Nueva cita
+        </span>
+
+        <span th:if="${cita.id != null}"
+              th:text="#{cita.form.editar}">
+            Editar cita
+        </span>
+
     </h1>
 
     <div class="alert alert-danger"
@@ -48,7 +55,8 @@
                      : @{/citas/{id}(id=${cita.id})}"
           method="post">
 
-        <input type="hidden" th:field="*{id}">
+        <input type="hidden"
+               th:field="*{id}">
 
         <div class="mb-3">
 
@@ -59,7 +67,8 @@
 
             <input type="datetime-local"
                    class="form-control"
-                   th:field="*{fechaHora}">
+                   th:field="*{fechaHora}"
+                   required>
 
             <div class="text-danger"
                  th:errors="*{fechaHora}">
@@ -105,14 +114,14 @@
                     Confirmada
                 </option>
 
-                <option value="CANCELADA"
-                        th:text="#{cita.estado.cancelada}">
-                    Cancelada
-                </option>
-
                 <option value="ATENDIDA"
                         th:text="#{cita.estado.atendida}">
                     Atendida
+                </option>
+
+                <option value="CANCELADA"
+                        th:text="#{cita.estado.cancelada}">
+                    Cancelada
                 </option>
 
             </select>
@@ -131,7 +140,8 @@
             </label>
 
             <select class="form-select"
-                    th:field="*{mascota}">
+                    th:field="*{mascota}"
+                    required>
 
                 <option value=""
                         th:text="#{cita.seleccionarMascota}">
@@ -160,7 +170,8 @@
             </label>
 
             <select class="form-select"
-                    th:field="*{veterinario}">
+                    th:field="*{veterinario}"
+                    required>
 
                 <option value=""
                         th:text="#{cita.seleccionarVeterinario}">
@@ -193,9 +204,12 @@
         </button>
 
         <a class="btn btn-secondary"
-           th:href="@{/citas}"
-           th:text="#{boton.cancelar}">
-            Cancelar
+           th:href="@{/citas}">
+
+            <span th:text="#{boton.cancelar}">
+                Cancelar
+            </span>
+
         </a>
 
     </form>

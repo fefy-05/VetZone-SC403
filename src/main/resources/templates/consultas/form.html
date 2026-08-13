@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title th:text="${consulta.id == null}
-                    ? #{consulta.form.nueva} + ' | VetZone'
-                    : #{consulta.form.editar} + ' | VetZone'">
+    <title th:text="#{consulta.titulo} + ' | VetZone'">
         Consulta médica | VetZone
     </title>
 
@@ -26,11 +24,18 @@
 
 <main class="container my-4" style="max-width: 800px;">
 
-    <h1 class="mb-4"
-        th:text="${consulta.id == null}
-                 ? #{consulta.form.nueva}
-                 : #{consulta.form.editar}">
-        Consulta médica
+    <h1 class="mb-4">
+
+        <span th:if="${consulta.id == null}"
+              th:text="#{consulta.form.nueva}">
+            Registrar consulta médica
+        </span>
+
+        <span th:if="${consulta.id != null}"
+              th:text="#{consulta.form.editar}">
+            Editar consulta médica
+        </span>
+
     </h1>
 
     <div class="alert alert-danger"
@@ -50,7 +55,8 @@
                      : @{/consultas/{id}(id=${consulta.id})}"
           method="post">
 
-        <input type="hidden" th:field="*{id}">
+        <input type="hidden"
+               th:field="*{id}">
 
         <div class="mb-3">
 
@@ -150,18 +156,25 @@
 
             <i class="bi bi-save me-1"></i>
 
-            <span th:text="${consulta.id == null}
-                           ? #{consulta.guardar}
-                           : #{consulta.actualizar}">
+            <span th:if="${consulta.id == null}"
+                  th:text="#{consulta.guardar}">
                 Guardar consulta
+            </span>
+
+            <span th:if="${consulta.id != null}"
+                  th:text="#{consulta.actualizar}">
+                Actualizar consulta
             </span>
 
         </button>
 
         <a class="btn btn-secondary"
-           th:href="@{/consultas}"
-           th:text="#{boton.cancelar}">
-            Cancelar
+           th:href="@{/consultas}">
+
+            <span th:text="#{boton.cancelar}">
+                Cancelar
+            </span>
+
         </a>
 
     </form>
